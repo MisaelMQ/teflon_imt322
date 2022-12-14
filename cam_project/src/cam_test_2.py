@@ -2,20 +2,28 @@
 
 import rospy
 from sensor_msgs.msg import Image
+from geometry_msgs.msg import Twist
 import numpy as np
 import cv2
+import tf.transformations as transform
 import tensorflow as tf
+import os
 from cv_bridge import CvBridge, CvBridgeError
 from mod_functions import *
 
+
+PARENT_PATH = os.path.dirname(os.path.abspath(__file__))
+
 # Objects to be Detected
-lista = ['bird','bycycle','stop sign','giraffe','clock','person','laptop','tv']
+lista = ['bird']
+#lista = ['bird','bycycle','stop sign','giraffe','clock','person','laptop','tv']
 # Model for Object Detection
-PATH_MODEL = 'data/weights.pb'
+PATH_MODEL = PARENT_PATH + '/data/weights.pb'
 # List of Label Strings
-PATH_LABELS = 'data/label_map.pbtxt'
+PATH_LABELS = PARENT_PATH + '/data/label_map.pbtxt'
 # Number of Classes
 NUM_CLASSES = 90
+
 
 # Loading a Frozen Tensorflow Model into memory
 detection_graph = tf.Graph()
@@ -35,14 +43,21 @@ category_index = label_map_util.create_category_index(categories)
 class Mazinger():
     def __init__(self):
         # Declaring publishers and suscribers
+        self.vel_publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
         self.cam_subscriber = rospy.Subscriber('/usb_cam/image_raw', Image, self.cam_callback)
 
         # Bridge
         self.bridge = CvBridge()
 
+        # Declaring Z rotation angle
+        self.rot_z = 0
+
          # Declaring variables
         self.img = np.zeros((720,1080,3), dtype="uint8")
+        self.vel = Twist()
 
+        # Configuration and initial states
+        self.vel.linear.x = 0
         self.rate = rospy.Rate(50)  # 10hz
         self.ctrl_c = False
 
@@ -76,21 +91,58 @@ class Mazinger():
                         category_index,
                         lista,
                         use_normalized_coordinates=True,
-                        min_score_thresh=0.5,
+                        min_score_thresh=0.65,
                         line_thickness=8)
 
-                    # Printing Detection Info
-                    for i in range(len(classes_list)):
-                        print('Classes: ', classes_list[i])
-                        print('Scores: ', scores_list[i])
-                        ymin,xmin,ymax,xmax = boxes_list[i]
-                        print('Ymin,Xmin,Ymax,Xmax: {},{},{},{}'.format(ymin,xmin,ymax,xmax))
-                        print('Size: ', image_np.shape[1])
-                        
+                    # 750000 200000 45000 +izq
                     cv2.imshow("Object Detection", image_np)
                     cv2.waitKey(3)
 
-                    print('----------------------------------------------')
+                    if(len(classes_list) > 0):
+                        # Printing Detection Info
+                        #print('Classes: ', classes_list[0])
+                        #print('Scores: ', scores_list[0])
+                        ymin,xmin,ymax,xmax = boxes_list[0]
+                        #print('Ymin,Xmin,Ymax,Xmax: {},{},{},{}'.format(ymin,xmin,ymax,xmax))
+                        center = (xmin + ((xmax-xmin)/2))*image_np.shape[1]
+                        area = ((ymax-ymin)*image_np.shape[0])*((xmax-xmin)*image_np.shape[1])
+                        print('Center: ', center)
+                        print('Area: ', area)
+
+                        aux = ''
+
+                        if(area > 150000):
+                            self.vel.linear.x = -0.2
+                            aux += 'Backward'
+                        elif(area < 100000):
+                            self.vel.linear.x = 0.2
+                            aux += 'Forward'
+                        elif(100000 <= area <= 150000):
+                            self.vel.linear.x = 0
+                            aux += 'Stop'
+
+                        limits = np.array([image_np.shape[1]*2/5,image_np.shape[1]*3/5],dtype="uint16")
+                        aux += ' - '
+
+                        if(center > limits[1]):
+                            self.vel.angular.z = -0.2
+                            aux += 'Right'
+                        elif(center < limits[0]):
+                            self.vel.angular.z = 0.2
+                            aux += 'Left'
+                        elif(limits[0] <= center <= limits[1]):
+                            self.vel.angular.z = 0
+                            aux += 'Stop'
+
+                    
+                        print(aux)
+                        print('----------------------------------------------')
+
+                    else:
+                        self.vel.linear.x = 0
+                        self.vel.angular.z = 0
+
+                    self.vel_publisher.publish(self.vel)
                     self.rate.sleep()
 
     def cam_callback(self, msg):
@@ -101,7 +153,9 @@ class Mazinger():
             print("CvBridge Error")
 
     def shutdownhook(self):
-        self.rate.sleep()
+        self.vel.linear.x = 0.0
+        self.vel.angular.z = 0.0
+        self.vel_publisher.publish(self.vel)
         self.ctrl_c = True
 
 
