@@ -5,17 +5,21 @@ from sensor_msgs.msg import Image
 import numpy as np
 import cv2
 import tensorflow as tf
+import os
 from cv_bridge import CvBridge, CvBridgeError
 from mod_functions import *
+
+PARENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 # Objects to be Detected
 lista = ['bird','bycycle','stop sign','giraffe','clock','person','laptop','tv']
 # Model for Object Detection
-PATH_MODEL = 'data/weights.pb'
+PATH_MODEL = PARENT_PATH + '/data/weights.pb'
 # List of Label Strings
-PATH_LABELS = 'data/label_map.pbtxt'
+PATH_LABELS = PARENT_PATH + '/data/label_map.pbtxt'
 # Number of Classes
 NUM_CLASSES = 90
+
 
 # Loading a Frozen Tensorflow Model into memory
 detection_graph = tf.Graph()
