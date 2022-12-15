@@ -1,0 +1,340 @@
+<?xml version='1.0'?>
+
+<robot name="teflon"
+  xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:arg name="robot_namespace" default=""/>
+
+  <xacro:include filename="$(find teflon)/urdf/materials.xacro" />
+  <xacro:include filename="$(find teflon)/urdf/teflon.gazebo" />
+
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.0096559 0.0017825 0.051755"
+        rpy="0 0 0" />
+      <mass
+        value="2.136" />
+      <inertia
+        ixx="0.002115"
+        ixy="-1.0539E-06"
+        ixz="-1.7445E-08"
+        iyy="0.0023736"
+        iyz="-3.9068E-10"
+        izz="0.0036867" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://teflon/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://teflon/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="wheel_rf">
+    <inertial>
+      <origin
+        xyz="1.5693E-08 -1.889E-08 0.015253"
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="5.988E-05"
+        ixy="1.143E-09"
+        ixz="1.7777E-10"
+        iyy="5.9883E-05"
+        iyz="-4.8006E-11"
+        izz="0.00010796" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://teflon/meshes/wheel_rf.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://teflon/meshes/wheel_rf.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="wheel_rf_joint"
+    type="continuous">
+    <origin
+      xyz="0.05 -0.10189 0.0175"
+      rpy="1.5708 0.033214 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="wheel_rf" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      effort="2"
+      velocity="30" />
+    <dynamics
+      damping="0.01"
+      friction="0.01" />
+  </joint>
+  <link
+    name="wheel_lf">
+    <inertial>
+      <origin
+        xyz="1.2514E-09 2.0854E-08 0.015113"
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="5.9881E-05"
+        ixy="-1.7428E-09"
+        ixz="-2.5667E-10"
+        iyy="5.9882E-05"
+        iyz="5.7588E-11"
+        izz="0.00010796" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://teflon/meshes/wheel_lf.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://teflon/meshes/wheel_lf.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="wheel_lf_joint"
+    type="continuous">
+    <origin
+      xyz="0.05 0.13226 0.0175"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="wheel_lf" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      effort="2"
+      velocity="30" />
+    <dynamics
+      damping="0.01"
+      friction="0.01" />
+  </joint>
+  <link
+    name="wheel_rb">
+    <inertial>
+      <origin
+        xyz="-1.8592E-09 3.1357E-08 0.015253"
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="5.988E-05"
+        ixy="-4.9653E-10"
+        ixz="1.7435E-10"
+        iyy="5.9883E-05"
+        iyz="5.4945E-11"
+        izz="0.00010796" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://teflon/meshes/wheel_rb.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://teflon/meshes/wheel_rb.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="wheel_rb_joint "
+    type="continuous">
+    <origin
+      xyz="-0.05 -0.10189 0.0175"
+      rpy="1.5708 -0.12598 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="wheel_rb" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      effort="2"
+      velocity="30" />
+    <dynamics
+      damping="0.01"
+      friction="0.01" />
+  </joint>
+  <link
+    name="wheel_lb">
+    <inertial>
+      <origin
+        xyz="-8.2338E-09 -6.2489E-09 0.015113"
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="5.9882E-05"
+        ixy="1.6476E-09"
+        ixz="2.065E-10"
+        iyy="5.9882E-05"
+        iyz="-2.0035E-10"
+        izz="0.00010796" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://teflon/meshes/wheel_lb.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://teflon/meshes/wheel_lb.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="wheel_lb_joint "
+    type="continuous">
+    <origin
+      xyz="-0.05 0.13226 0.0175"
+      rpy="1.5708 -0.10712 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="wheel_lb" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      effort="2"
+      velocity="30" />
+    <dynamics
+      damping="0.01"
+      friction="0.01" />
+  </joint>
+  <link
+    name="camera">
+    <inertial>
+      <origin
+        xyz="-0.022285 1.9337E-05 -0.0096913"
+        rpy="0 0 0" />
+      <mass
+        value="0.162" />
+      <inertia
+        ixx="4.165E-05"
+        ixy="3.4284E-09"
+        ixz="1.0531E-07"
+        iyy="1.9067E-05"
+        iyz="-9.9822E-10"
+        izz="5.3099E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://teflon/meshes/camera.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://teflon/meshes/camera.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="camera_joint"
+    type="fixed">
+    <origin
+      xyz="0.0575 -0.0045444 0.157"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="camera" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>
