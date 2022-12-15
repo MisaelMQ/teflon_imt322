@@ -1,5 +1,0 @@
-<launch>
-    <!-- My Package launch file -->
-    <node pkg="teflon" type="cam_test_1.py" name="cam_test_1_node"  output="screen">
-    </node>
-</launch>
