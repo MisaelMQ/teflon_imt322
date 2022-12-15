@@ -22,5 +22,10 @@ Before cloning to run the code download the package rossserial from the followin
 
 
 ## Evidence
-
+<div align="center">
+  <img src="images/robot_fisico.jpeg" width="70%">
+</div>
+<div align="center">
+  <img src="DSC_6477.JPG" width="70%"> 
+</div>
 
