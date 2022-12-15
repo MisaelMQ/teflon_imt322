@@ -26,6 +26,9 @@ Before cloning to run the code download the package rossserial from the followin
   <img src="images/robot_fisico.jpeg" width="70%">
 </div>
 <div align="center">
-  <img src="robotjpeg" width="70%"> 
+  <img src="images/robot.jpeg" width="70%"> 
+</div>
+<div align="center">
+  <img src="images/von.jpeg" width="70%"> 
 </div>
 
