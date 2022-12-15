@@ -1,6 +1,6 @@
 
 <div align="center">
-  <img src="images/logos.png" width="61%">
+  <img src="images/logos.jpeg" width="61%">
 </div>
 # teflon_imt322
 
