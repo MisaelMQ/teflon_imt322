@@ -1,10 +1,10 @@
 
 <div align="center">
-  <img src="images/logos.jpeg" width="61%">
+  <img src="images/logos.jpeg" width="81%">
 </div>
 # teflon_imt322
 
-Aplications
+## Aplications
 
 This package was created with the intention of providing Teflon robot with the ability to perform 3 applications that combine movement and artificial vision. For this purpose two topics were created: cmd_vel is responsible for Teflon to generate movement using the incorporated motors, usb_cam is responsible for Teflon to use the incorporated camera. Additionally, for machine vision applications, cvBridge is used which acts as a connection to convert between images in ROS format and images in opencv format. This conversion is necessary because image manipulation is facilitated when using the opencv library for this purpose.
 
